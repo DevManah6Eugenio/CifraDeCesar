@@ -1,21 +1,17 @@
 package cesar;
 
 public class CifraDeCesar {
+
     private int chave;
     private StringBuilder textoCifrado = null;
     private StringBuilder textoDecifrado = null;
-    private int tamanhoTexto;
-    
+
     public String encriptar(int chave, String texto) {
-        
-        if (textoCifrado == null){
-            textoCifrado = new StringBuilder();
-        } else {
-            textoCifrado = limparStringBuilder(textoCifrado);
-        }
-        
-        for (int c = 0; c < getTamanhoTexto(texto); c++) {
-            int letraCifradaASCII = (((int)texto.charAt(c)) + chave);
+
+        textoCifrado = limparStringBuilder(textoCifrado);
+
+        for (int c = 0; c < tamanhoDoTexto(texto); c++) {
+            int letraCifradaASCII = (((int) texto.charAt(c)) + chave);
             textoCifrado.append((char) letraCifradaASCII);
         }
 
@@ -23,27 +19,32 @@ public class CifraDeCesar {
     }
 
     public String decriptar(int chave, String texto) {
-        
-        if (textoDecifrado == null){
-            textoDecifrado = new StringBuilder();
-        } else {
-            textoDecifrado = limparStringBuilder(textoDecifrado);
-        }
-        
+
+        textoDecifrado = limparStringBuilder(textoDecifrado);
+
         chave *= -1;
-        
-        textoDecifrado.append(encriptar(chave, texto));
-        
+
+        for (int c = 0; c < tamanhoDoTexto(texto); c++) {
+            int letraDecifradaASCII = (((int) texto.charAt(c)) + chave);
+            textoDecifrado.append((char) letraDecifradaASCII);
+        }
+       
         return textoDecifrado.toString();
     }
 
-    public int getTamanhoTexto(String texto) {
-        tamanhoTexto = texto.length();
+    public int tamanhoDoTexto(String texto) {
+        int tamanhoTexto = texto.length();
         return tamanhoTexto;
     }
-    
-    public StringBuilder limparStringBuilder(StringBuilder var){
-        var.delete(0, var.length());
-        return var;
+
+    //verifica se a variavel ja foi iniciada se ja limpa a memoria usada 
+    //pela variavel para ser usada novamente
+    public StringBuilder limparStringBuilder(StringBuilder variavelStringBuilder) {
+        if (variavelStringBuilder == null) {
+            variavelStringBuilder = new StringBuilder();
+        } else {
+            variavelStringBuilder.delete(0, variavelStringBuilder.length());
+        }
+        return variavelStringBuilder;
     }
 }
